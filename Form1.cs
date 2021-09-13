@@ -126,13 +126,49 @@ namespace WindowsFormsApp1
                     dataGridView1.Rows[i].Cells[j].Value = 1;
                 }
         }
-        
+
         private void button4_Click(object sender, EventArgs e) // второе задание
         {
-            Exception2 two = new Exception2();
-            two.Swit = comboBox1.Text + comboBox2.Text; //значения комбобоксов
-            two.TextBox_1 = textBox1.Text;
-            textBox2.Text = two.GoDo();
+
+            string swit = comboBox1.Text + comboBox2.Text; //значения комбобоксов
+            string res;
+
+            switch (swit) //проверка на значения комбобоксов и возвращение результата
+            {
+                case "210":
+                    ToDec todec = new ToDec();
+                    todec.TextBox_1 = textBox1.Text;
+                    res = todec.Todec();
+                    if (res != null)
+                    {
+                        textBox2.Text = res;
+                        break;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Введите целочисленное значение", "Ошибка");
+                        break;
+                    }
+                case "102":
+                    ToTw totwice = new ToTw();
+                    totwice.TextBox_1 = textBox1.Text;
+                    res = totwice.Totw();
+                    if (res != null)
+                    {
+                        textBox2.Text = res;
+                        break;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Введите целочисленное значение", "Ошибка");
+                        break;
+                    }
+                default:
+                    {
+                        MessageBox.Show("Пожалуйста, выберите две разные системы счисления.", "Ошибка");
+                        break;
+                    }
+            }
         }
 
         private void button5_Click(object sender, EventArgs e) //закрыть
@@ -144,90 +180,54 @@ namespace WindowsFormsApp1
 
     public class PreException2 //родительский класс
     {
-        public string Swit { get; set; }
         public string TextBox_1 { get; set; }
 
     }
-    public class Exception2 : PreException2 //дочерний класс
+
+    public class ToTw : PreException2 //Дочерний в Двоичную
     {
-        public string GoDo()
+        public string Totw()
         {
-            switch (Swit) //проверка на значения комбобоксов и возвращение результата
+            if (TextBox_1 == null)
             {
-                case "22":
-                    try
-                    {
-                        bool bul1 = false;
-                        for (int i = TextBox_1.Length - 1; i >= 0; i--)
-                            if ((int.Parse(TextBox_1[i].ToString()) < 0) | (int.Parse(TextBox_1[i].ToString()) > 1))
-                            {
-                                bul1 = true;
-                            }
-                        if (bul1 == false)
-                        {
-                            return TextBox_1;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Некорректное число", "Ошибка");
-                            return null;
-                        }
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Введите целочисленное значение", "Ошибка");
-                        return null;
-                    }
-                case "1010":
-                    try
-                    {
-                        Convert.ToSingle(TextBox_1);
-                        return TextBox_1;
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Введите целочисленное значение","Ошибка");
-                        return null;
-                    }
-                case "210":
-                    //из 2 в 10
-                    if (TextBox_1 == null)
-                    {
-                        MessageBox.Show("Введите целочисленное значение", "Ошибка");
-                        return null;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            string res = Convert.ToInt32(TextBox_1, 2).ToString();
-                            return res;
-                        }
-                        catch
-                        {
-                            MessageBox.Show("Введите целочисленное значение", "Ошибка");
-                            return null;
-                        }
-                    }
-                case "102":
-                    try
-                    {
-                        string bin = Convert.ToString(int.Parse(TextBox_1), 2);
-                        return bin;
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Введите целочисленное значение", "Ошибка");
-                        return null;
-                    }
-                default:
-                    {
-                        MessageBox.Show("Вы не выбрали систему счисления", "Ошибка");
-                        return null;
-                    }
+                return null;
+            }
+
+            else
+            {
+                try
+                {
+                    string res = Convert.ToString(int.Parse(TextBox_1), 2);
+                    return res;
+                }
+                catch
+                {
+                    return null;
+                }
             }
         }
     }
 
-
+    public class ToDec : PreException2 //Дочерний в Десятичную
+    {
+        public string Todec()
+        {
+            if (TextBox_1 == null)
+            {
+                return null;
+            }    
+            else
+            {
+                try
+                {
+                    string res = Convert.ToInt32(TextBox_1, 2).ToString();
+                    return res;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+    }
 }
